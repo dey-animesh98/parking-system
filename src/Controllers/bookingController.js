@@ -2,6 +2,7 @@ const BookingModel = require('../Models/bookingModel')
 const util = require('../Utils/validation')
 
 
+// -----------------Create Slot ----------------------//
 
 const createSlot = async function (req, res) {
     try {
@@ -18,6 +19,9 @@ const createSlot = async function (req, res) {
         return res.status(500).send({ status: false, message: "Error", error: err.message });
     }
 };
+
+
+// ----------------- Fetch Slot ----------------------//
 
 const fetchSlots = async function (req, res) {
     try {
@@ -45,6 +49,9 @@ const fetchSlots = async function (req, res) {
     }
 }
 
+
+// ----------------- Available Slot ----------------------//
+
 const curretAvailbleSlots = async function (req, res) {
     try {
 
@@ -53,7 +60,7 @@ const curretAvailbleSlots = async function (req, res) {
 
         //If no slots available
         if (availableSlotCount === 0)
-            return res.status(200).send({ status: true, message: "Currently no slots available", clickHere: "http://localhost:3000/check-waiting-time" })
+            return res.status(200).send({ status: true, message: "Currently no slots available", clickHere: "http://localhost:3000/min-waiting-time" })
 
         let slotCountData = {
             Available_Slots: availableSlotCount,
@@ -68,6 +75,9 @@ const curretAvailbleSlots = async function (req, res) {
     }
 }
 
+
+// ----------------- Book Slot ----------------------//
+
 const bookSlot = async function (req, res) {
     try {
         const slotId = req.params.id
@@ -75,7 +85,7 @@ const bookSlot = async function (req, res) {
         const slot = await BookingModel.findOne({ slotId: slotId })
 
         if (!slot) return res.status(400).send({ status: false, message: "Enter a valid slot id" })
-        if (slot.status === "Booked") return res.status(400).send({ status: false, message: "Slot is alresdy booked. Select an another slot" })
+        if (slot.status === "Booked") return res.status(400).send({ status: false, message: "This slot is already booked. Select an another slot" })
 
         const data = req.body
         const { duration_to, duration_from, whom } = data
@@ -86,6 +96,12 @@ const bookSlot = async function (req, res) {
         const duration_start = new Date(duration_from)
         const duration_start_seconds = duration_start.getTime() / 1000;
 
+        //Advance booking limit
+        const total_dur_secs = duration_start_seconds - present_date
+        const total_dur_hrs = (Math.floor(total_dur_secs / 3600))
+        if (total_dur_hrs > 6) return res.status(400).send({ status: false, message: "Advance booking must be within next 6 hours" })
+
+        //Date validation
         if (duration_start_seconds < present_date)
             return res.status(400).send({ status: false, message: "Please enter a valid for booking start" })
 
@@ -119,13 +135,6 @@ const bookSlot = async function (req, res) {
 
         return res.status(200).send({ status: true, message: "You slot booked", data: slot })
 
-        /*
-        const duration_in_hours = Math.round(duration_in_seceonds / 3600)
-        if (duration_in_hours < 1) return res.status(400).send({ status: false, message: "Minimum booking hours is 1 hr" })
-        if (duration_in_hours > 24) return res.status(400).send({ status: false, message: "Maximum booking hours is 24 hrs" })
-*/
-
-
     } catch (err) {
         return res.status(500).send({ status: false, message: "Error", error: err.message });
 
@@ -133,7 +142,7 @@ const bookSlot = async function (req, res) {
 
 }
 
-//Update slot status to available
+//--------------------------Update slot status to available---------------------------//
 
 const updateSlotToAvailable = async function (req, res) {
     try {
@@ -142,12 +151,92 @@ const updateSlotToAvailable = async function (req, res) {
         const slot = await BookingModel.findOne({ slotId: slotId })
 
         if (!slot) return res.status(400).send({ status: false, message: "Enter a valid slot id" })
-        if (slot.status === "Available") return res.status(400).send({ status: false, message: "This Slot is alresdy Available" })
-        
+        if (slot.status === "Available") return res.status(400).send({ status: false, message: "This slot is already Available" })
+
+        //Change status & other details
+
+        slot.status = "Available"
+        slot.duration = null
+        slot.duration_from = null
+        slot.duration_to = null
+        slot.whom.name = null
+        slot.whom.email = null
+        slot.whom.mobile = null
+
+        await slot.save()
+        return res.status(200).send({ status: true, message: "Slot availed", data: slot })
+
     } catch (err) {
-        
+        return res.status(500).send({ status: false, message: "Error", error: err.message });
+    }
+}
+
+//---------------------Min waiting time----------------------------//
+
+const getMinWaitingTime = async function (req, res) {
+    try {
+        //Getting slots data
+        const availableSlotCount = await BookingModel.find({ status: "Available" }).count()
+
+        //If no slots available
+        if (availableSlotCount !== 0)
+            return res.status(200).send({ status: true, message: "slots are available now", clickToCheck: "http://localhost:3000/get-slots?status=Available" })
+
+        //Finding minimum time 
+        const groupedData = await BookingModel.find().sort({ duration_to: 1 }).limit(1)
+
+        const present_date = Math.round(Date.now() / 1000)
+        const min_time_secs = groupedData[0]['duration_to']
+        const waiting_time_secs = min_time_secs - present_date
+        const waiting_time_hrs = util.convert_sec_to_hr(waiting_time_secs)
+
+        const result = {
+            your_min_waiting_time: waiting_time_hrs,
+            slot_id_will: groupedData[0].slotId
+        }
+
+        return res.status(200).send({ status: true, data: result })
+
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).send({ status: false, message: "Error", error: err.message });
     }
 }
 
 
-module.exports = { createSlot, fetchSlots, curretAvailbleSlots, bookSlot, updateSlotToAvailable }
+//---------------------Min waiting time for particular slots----------------------//
+
+const getMinWaitingTimeById = async function (req, res) {
+    try {
+        const slotId = req.params.id
+
+        //Getting slots data
+        const slot = await BookingModel.findOne({ slotId: slotId })
+        if (slot.status === "Available") return res.status(200).send({ status: true, message: "Slot is available" })
+
+        const present_date = Math.round(Date.now() / 1000)
+        const min_time_secs = slot['duration_to']
+        const waiting_time_secs = min_time_secs - present_date
+        const waiting_time_hrs = util.convert_sec_to_hr(waiting_time_secs)
+
+        const result = {
+            waiting_time: waiting_time_hrs,
+
+        }
+
+        return res.status(200).send({ status: true, data: result })
+
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).send({ status: false, message: "Error", error: err.message });
+    }
+}
+module.exports = { createSlot, fetchSlots, curretAvailbleSlots, bookSlot, updateSlotToAvailable, getMinWaitingTime, getMinWaitingTimeById }
+
+
+ // .aggregate([
+        //     {
+        //         $group: { _id:"$slotId", minTime: { $min: "$duration_to" }, }
+        //     }
+        // ])//.limit(1)
+        // console.log(groupedData)

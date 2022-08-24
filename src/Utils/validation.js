@@ -5,7 +5,7 @@ const convert_sec_to_hr = function (secs) {
     var h = Math.floor(secs / 3600);
     var m = Math.floor(secs % 3600 / 60);
     var hour = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-    var minute = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
+    var minute = m > 0 ? m + (m == 1 ? " minute" : " minutes") : "";
     return hour + minute
 }
 

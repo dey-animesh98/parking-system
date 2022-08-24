@@ -15,18 +15,19 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         default: "0 hours",
     },
-    duration_to: {
-        type: String,
-        default: "0",
-    },
     duration_from: {
-        type: String,
-        default: "0",
+        type: Number,
+        default: 0,
+    },
+    duration_to: {
+        type: Number,
+        default: 0,
     },
     whom: {
         name: { type: String, default: null },
         email: { type: String, default: null },
-        mobile: { type: String, default: null }
+        mobile: { type: String, default: null },
+        vechicle_no:{ type: String, default: null }
     }
 }, { timestamps: true })
 
