@@ -21,7 +21,7 @@ let isEmpty = function (value) {
 }
 
 let isValidPhone = function (number) {
-    let phoneRegex = /^[6789]{1}\d{9}$/;
+    let phoneRegex = /^[456789]{1}\d{9}$/;
     return phoneRegex.test(number);
 }
 
@@ -31,7 +31,7 @@ let isValidEmail = function (email) {
 }
 
 let isValidVehical = function (vehicle) {
-    return vehicle.trim().length >= 8 && vehicle.trim().length <= 10 
+    return vehicle.trim().length >= 4 && vehicle.trim().length <= 10 
 }
 
 

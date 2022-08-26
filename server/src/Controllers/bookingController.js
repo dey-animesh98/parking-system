@@ -103,9 +103,8 @@ const bookSlot = async function (req, res) {
         if(!whom.vehicle_no) return res.status(400).send({ status: false, message: "Please vehicle no to book slot" })
 
         if(!util.isValidEmail(whom.email))return res.status(400).send({ status: false, message: "Please enter valid email id to book slot" })
-        if(!util.isValidPhone(whom.mobile))return res.status(400).send({ status: false, message: "Please enter valid mobile no to book slot" })
+        if(!util.isValidPhone(whom.mobile))return res.status(400).send({ status: false, message: "Please enter valid 10 digit mobile no." })
         if(!util.isValidVehical(whom.vehicle_no))return res.status(400).send({ status: false, message: "Please enter valid vehicle no to book slot" })
-
 
 
         const present_date = Math.round(Date.now() / 1000)
