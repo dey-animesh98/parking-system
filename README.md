@@ -2,6 +2,28 @@
 
 Application for book your parking slot
 
+## UI
+`Available`
+![plot](./UI%20images/Available.png)
+
+`Booking form`
+![plot](./UI%20images/Form-filling.png)
+
+`Booking date & time`
+![plot](./UI%20images/booking-date-time.png)
+
+`Booking success`
+![plot](./UI%20images/booking-succes.png)
+
+`Slot waiting time`
+![plot](./UI%20images/slot-waiting-time.png)
+
+`No Avaibilty`
+![plot](./UI%20images/no-avaibility.png)
+
+
+
+
 ### SERVER
 
 Start the server`npm start`
