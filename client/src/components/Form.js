@@ -61,9 +61,9 @@ const Form = (props) => {
             if (res) {
                 setSuccess(true)
 
-                // setTimeout(() => {
-                //     refreshPage()
-                // }, 3500);
+                setTimeout(() => {
+                    refreshPage()
+                }, 3500);
             }
 
         } catch (err) {
