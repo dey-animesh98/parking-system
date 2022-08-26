@@ -7,6 +7,7 @@ import axios from "axios";
 
 const Form = (props) => {
 
+    //Hooks
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [mobile, setMobile] = useState('')
@@ -16,11 +17,8 @@ const Form = (props) => {
     const [success, setSuccess] = useState(false)
 
 
-    // const [, updateState] = useState();
-    // const forceUpdate = useCallback(() => updateState({}), []);
 
-
-
+    //Collecting Input
     const getName = (e) => {
         return setName(e.target.value)
     }
@@ -41,6 +39,7 @@ const Form = (props) => {
         window.location.reload(false);
     }
 
+    //Send data to sever
     const sendData = async () => {
         let id = props.slotNo
         let whom = {
@@ -66,8 +65,10 @@ const Form = (props) => {
     }
 
 
+    //Conditional HTML 
     return (
         <>
+        
             {success
                 ?
                 <p className='success-msg'>
@@ -129,28 +130,3 @@ const Form = (props) => {
 }
 
 export default Form
-
-/*
-// const [duration_from, setDuration_from] = useState('')
-    // const [duration_to, setDuration_to] = useState('')
-
-    // const getDuration_from = (e) => {
-    //     return setDuration_from(e.target.value)
-    // }
-
-    // const getDuration_to = (e) => {
-    //     return setDuration_to(e.target.value)
-    // }
-
-    
-
-             // <div className='from'>
-                //     <label htmlFor="start">From</label>
-                //     <input id="start" className='dates' name="duration_from" type="datetime-local" value={duration_from} onChange={getDuration_from} />
-                // </div>
-
-                // <div className='to'>
-                //     <label htmlFor="end">To</label>
-                //     <input id="end" className='dates' name="duration_to" type="datetime-local" value={duration_to} onChange={getDuration_to} />
-                // </div> 
-*/
