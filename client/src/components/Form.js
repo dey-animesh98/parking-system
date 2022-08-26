@@ -1,8 +1,7 @@
-import { useEffect, useState ,useReducer} from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
-import { Booking } from './Booking'
 
 
 
@@ -16,15 +15,11 @@ const Form = (props) => {
     const [duration_to, setDuration_to] = useState(new Date());
     const [success, setSuccess] = useState(false)
 
-    // const getData = async () => {
-    //     let res = await axios.get(`http://localhost:3001/get-slots`)
-    // }
-    // console.log(reload)
 
-  
-    // useEffect(() => {
-        
-    // }, [])
+    // const [, updateState] = useState();
+    // const forceUpdate = useCallback(() => updateState({}), []);
+
+
 
     const getName = (e) => {
         return setName(e.target.value)
@@ -42,8 +37,9 @@ const Form = (props) => {
         return setVehicle_no(e.target.value)
     }
 
-
-
+    function refreshPage() {
+        window.location.reload(false);
+    }
 
     const sendData = async () => {
         let id = props.slotNo
@@ -58,16 +54,27 @@ const Form = (props) => {
             duration_to: duration_to,
             whom: whom
         })
+
         if (res) {
             setSuccess(true)
-            // forceUpdate()
+
+            setTimeout(() => {
+                refreshPage()
+            }, 3500);
         }
 
     }
 
+
     return (
         <>
-            {success ? <p className='success-msg'> Your slot is booked. Happy Parking</p> :
+            {success
+                ?
+                <p className='success-msg'>
+                    <span>Your slot is booked. Please wait while we are saving your data.</span> <br />
+                    <span>Happy Parking</span>
+                </p>
+                :
 
                 <div className='form'>
 

@@ -60,13 +60,15 @@ const curretAvailbleSlots = async function (req, res) {
         //Getting slots data
         const availableSlotCount = await BookingModel.find({ status: "Available" }).count()
 
-        //If no slots available
-        if (availableSlotCount === 0)
-            return res.status(200).send({ status: true, message: "Currently no slots available", clickHere: "http://localhost:3000/min-waiting-time" })
-
         let slotCountData = {
             Available_Slots: availableSlotCount,
             Booked_Slots: 10 - availableSlotCount
+        }
+
+        //If no slots available
+        if (availableSlotCount === 0) {
+            slotCountData['message'] = "Currently no slots available"
+            slotCountData['clickHere'] = "http://localhost:3000/min-waiting-time"
         }
         //If slots available
         return res.status(200).send({ status: true, slots: slotCountData })
