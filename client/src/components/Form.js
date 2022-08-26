@@ -5,6 +5,7 @@ import axios from "axios";
 
 
 
+
 const Form = (props) => {
 
     //Hooks
@@ -98,13 +99,16 @@ const Form = (props) => {
                             filterDate={d => {
                                 return new Date() < d;
                             }}
-                            placeholderText="Select check in time"
                             showTimeSelect
+                            placeholderText="Select check in time"
                             dateFormat="MMMM dd, yyyy h:mmaa"
+                            timeFormat="HH:mm"
+                            timeIntervals={10}
+                            timeCaption="Time"
                             selected={duration_from}
                             selectsStart
                             startDate={duration_from}
-                            minDate={duration_from}
+                            minDate={new Date()}
                             endDate={duration_to}
                             onChange={date => setDuration_from(date)}
                         />
@@ -116,11 +120,14 @@ const Form = (props) => {
                             showTimeSelect
                             placeholderText="Select check out time"
                             dateFormat="MMMM dd, yyyy h:mmaa"
+                            timeFormat="HH:mm"
+                            timeIntervals={10}
+                            timeCaption="Time"
                             selected={duration_to}
                             selectsEnd
-                            startDate={duration_from}
-                            endDate={duration_to}
+                            startDate={new Date()}
                             minDate={duration_from}
+                            endDate={duration_to}
                             onChange={date => setDuration_to(date)}
                         />
                     </div>
