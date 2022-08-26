@@ -20,6 +20,7 @@ const Form = (props) => {
 
 
 
+
     //Collecting Input
     const getName = (e) => {
         return setName(e.target.value)
@@ -60,9 +61,9 @@ const Form = (props) => {
             if (res) {
                 setSuccess(true)
 
-                setTimeout(() => {
-                    refreshPage()
-                }, 3500);
+                // setTimeout(() => {
+                //     refreshPage()
+                // }, 3500);
             }
 
         } catch (err) {
@@ -81,8 +82,9 @@ const Form = (props) => {
             {success
                 ?
                 <p className='success-msg'>
-                    <span>Your slot is booked. Please wait while we are saving your data.</span> <br />
-                    <span>Happy Parking</span>
+                    <span> Hello {name}, Slot {props.slotNo} is booked for you.</span><br />
+                    <span> Please wait while we are saving your data.</span> <br />
+                    <span>Happy Parking!!</span>
                 </p>
                 :
 
