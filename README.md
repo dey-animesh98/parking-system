@@ -2,6 +2,22 @@
 
 Application for book your parking slot
 
+## INSTRUCTIONS ##
+* Frontend is build with ReactJS & Backend is NodeJS
+- Start the server then start the frontend.
+
+* Some Instruction to Fill the form of Booking 
+```yml
+Row -1 -> Date for duration_from -> date must be future & not more than next hours.
+Row -2 -> Date for duration_to -> date must be future & greater than start time.
+Row -3 -> Name is Required -> No validations
+Row -4 -> Email is Required -> Valid Email
+Row -5 -> Mobile is required -> 10 Digit & should start with 6, 7, 8, 9 Only
+Row -6 -> Vehicle no is required -> Min length 8 max length 10
+```
+
+
+
 ## UI
 `Available`
 ![plot](./UI%20images/Available.png)

@@ -95,6 +95,19 @@ const bookSlot = async function (req, res) {
         const data = req.body
         const { duration_to, duration_from, whom } = data
 
+        //Req body validations
+        if(!util.isValidRequestBody) return res.status(400).send({ status: false, message: "Please enter deatails to book slot" })
+        if(!whom.name) return res.status(400).send({ status: false, message: "Please enter name to book slot" })
+        if(!whom.email) return res.status(400).send({ status: false, message: "Please enter email to book slot" })
+        if(!whom.mobile) return res.status(400).send({ status: false, message: "Please enter mobile to book slot" })
+        if(!whom.vehicle_no) return res.status(400).send({ status: false, message: "Please vehicle no to book slot" })
+
+        if(!util.isValidEmail(whom.email))return res.status(400).send({ status: false, message: "Please enter valid email id to book slot" })
+        if(!util.isValidPhone(whom.mobile))return res.status(400).send({ status: false, message: "Please enter valid mobile no to book slot" })
+        if(!util.isValidVehical(whom.vehicle_no))return res.status(400).send({ status: false, message: "Please enter valid vehicle no to book slot" })
+
+
+
         const present_date = Math.round(Date.now() / 1000)
 
         //Duration start
@@ -104,11 +117,11 @@ const bookSlot = async function (req, res) {
         //Advance booking limit
         const total_dur_secs = duration_start_seconds - present_date
         const total_dur_hrs = (Math.floor(total_dur_secs / 3600))
-        if (total_dur_hrs > 6) return res.status(400).send({ status: false, message: "Advance booking must be within next 6 hours" })
+        if (total_dur_hrs > 8) return res.status(400).send({ status: false, message: "Advance booking must be within next 8 hours" })
 
         //Date validation
         if (duration_start_seconds < present_date)
-            return res.status(400).send({ status: false, message: "Please enter a valid for booking start" })
+            return res.status(400).send({ status: false, message: "Please enter a valid date for booking start" })
 
 
         //Duration End
@@ -116,7 +129,7 @@ const bookSlot = async function (req, res) {
         const duration_end_seconds = duration_end.getTime() / 1000;
 
         if (duration_end_seconds < duration_start_seconds || duration_end_seconds < present_date)
-            return res.status(400).send({ status: false, message: "Please enter a valid for booking end" })
+            return res.status(400).send({ status: false, message: "Please enter a valid date for booking end" })
 
 
         const duration_in_seceonds = duration_end_seconds - duration_start_seconds
@@ -131,8 +144,8 @@ const bookSlot = async function (req, res) {
 
         slot.status = "Booked"
         slot.duration = get_duration
-        slot.duration_from = duration_start_seconds
-        slot.duration_to = duration_end_seconds
+        slot.duration_from = Math.floor(duration_start_seconds)
+        slot.duration_to = Math.floor(duration_end_seconds) 
         slot.whom.name = userName
         slot.whom.email = userEmail
         slot.whom.mobile = userMobile

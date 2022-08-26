@@ -64,7 +64,7 @@ const Form = (props) => {
                     refreshPage()
                 }, 3500);
             }
-            
+
         } catch (err) {
             setError(true)
             setErrorMsg(err.response.data.message)
@@ -84,60 +84,58 @@ const Form = (props) => {
                     <span>Your slot is booked. Please wait while we are saving your data.</span> <br />
                     <span>Happy Parking</span>
                 </p>
+                :
 
-                : error
-                    ?
-                    <p className='bad-req-msg'>{errorMsg}</p>
-                    :
+                <div className='form'>
 
-                    <div className='form'>
+                    <p className='heading'><span>Available! Book Your Slot Now</span></p>
+                    <div className='date-picker'>
 
-                        <p className='heading'><span>Available! Book Your Slot Now</span></p>
-                        <div className='date-picker'>
-
-                            <DatePicker
-                                isClearable
-                                filterDate={d => {
-                                    return new Date() < d;
-                                }}
-                                placeholderText="Select check in time"
-                                showTimeSelect
-                                dateFormat="MMMM dd, yyyy h:mmaa"
-                                selected={duration_from}
-                                selectsStart
-                                startDate={duration_from}
-                                minDate={duration_from}
-                                endDate={duration_to}
-                                onChange={date => setDuration_from(date)}
-                            />
-                            <DatePicker
-                                isClearable
-                                filterDate={d => {
-                                    return new Date() < d;
-                                }}
-                                showTimeSelect
-                                placeholderText="Select check out time"
-                                dateFormat="MMMM dd, yyyy h:mmaa"
-                                selected={duration_to}
-                                selectsEnd
-                                startDate={duration_from}
-                                endDate={duration_to}
-                                minDate={duration_from}
-                                onChange={date => setDuration_to(date)}
-                            />
-                        </div>
-
-                        <form className="booking-form">
-
-                            <input className="register-form" name="name" type='text' placeholder="Enter name" value={name} onChange={getName} />
-                            <input className="register-form" name="email" type='email' placeholder="Enter email" value={email} onChange={getEmail} />
-                            <input className="register-form" name="mobile" type='text' placeholder="Enter mobile no" value={mobile} onChange={getMobile} />
-                            <input className="register-form" name="vehicle_no" type='text' placeholder="Enter Vehicle no" value={vehicle_no} onChange={getVehicle_no} />
-                            <button type="button" className="btn btn-submit" onClick={sendData}>Confirm Booking</button>
-
-                        </form>
-
+                        <DatePicker
+                            isClearable
+                            filterDate={d => {
+                                return new Date() < d;
+                            }}
+                            placeholderText="Select check in time"
+                            showTimeSelect
+                            dateFormat="MMMM dd, yyyy h:mmaa"
+                            selected={duration_from}
+                            selectsStart
+                            startDate={duration_from}
+                            minDate={duration_from}
+                            endDate={duration_to}
+                            onChange={date => setDuration_from(date)}
+                        />
+                        <DatePicker
+                            isClearable
+                            filterDate={d => {
+                                return new Date() < d;
+                            }}
+                            showTimeSelect
+                            placeholderText="Select check out time"
+                            dateFormat="MMMM dd, yyyy h:mmaa"
+                            selected={duration_to}
+                            selectsEnd
+                            startDate={duration_from}
+                            endDate={duration_to}
+                            minDate={duration_from}
+                            onChange={date => setDuration_to(date)}
+                        />
                     </div>
+
+                    <form className="booking-form">
+
+                        <input className="register-form" name="name" type='text' placeholder="Enter name*" value={name} onChange={getName} />
+                        <input className="register-form" name="email" type='email' placeholder="Enter email*" value={email} onChange={getEmail} />
+                        <input className="register-form" name="mobile" type='text' placeholder="Enter mobile no*" value={mobile} onChange={getMobile} />
+                        <input className="register-form" name="vehicle_no" type='text' placeholder="Enter Vehicle no*" value={vehicle_no} onChange={getVehicle_no} />
+                        <button type="button" className="btn btn-submit" onClick={sendData}>Confirm Booking</button>
+
+                    </form>
+                    {error
+                        ?
+                        <p className='bad-req-msg'>{errorMsg}</p> : ""}
+                </div>
             }
         </>
     )

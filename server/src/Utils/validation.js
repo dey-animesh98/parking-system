@@ -10,26 +10,28 @@ const convert_sec_to_hr = function (secs) {
 
 
 let isValidRequestBody = function (body) {
-    if (Object.keys(body).length === 0) return true;
+    if (Object.keys(body).length === 0) return false;
     return false;
 }
 
 let isEmpty = function (value) {
-    if (typeof value === 'undefined' || value === null) return true;
-    if (typeof value === 'string' && value.trim().length === 0) return true;
-
-
-    return false;
+    if (typeof value === 'undefined' || value === null) return false;
+    if (typeof value === 'string' && value.trim().length === 0) return false;
+    return true;
 }
 
 let isValidPhone = function (number) {
-    let phoneRegex = /^[+91]{3}?[6789]{1}\d{9}$/;
+    let phoneRegex = /^[6789]{1}\d{9}$/;
     return phoneRegex.test(number);
 }
 
 let isValidEmail = function (email) {
     let emailRegex = /^([A-Za-z0-9._-]{2,}@[A-Za-z]{3,}[.]{1}[A-Za-z.]{2,6})+$/
     return emailRegex.test(email)
+}
+
+let isValidVehical = function (vehicle) {
+    return vehicle.trim().length >= 8 && vehicle.trim().length <= 10 
 }
 
 
@@ -54,5 +56,6 @@ module.exports = {
     isEmpty,
     isValidEmail,
     isValidPhone,
+    isValidVehical,
     anyObjectKeysEmpty
 }
