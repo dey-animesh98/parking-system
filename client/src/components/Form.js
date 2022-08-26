@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, } from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
@@ -15,6 +15,8 @@ const Form = (props) => {
     const [duration_from, setDuration_from] = useState(new Date());
     const [duration_to, setDuration_to] = useState(new Date());
     const [success, setSuccess] = useState(false)
+    const [error, setError] = useState(false)
+    const [errorMsg, setErrorMsg] = useState("")
 
 
 
@@ -48,19 +50,26 @@ const Form = (props) => {
             "mobile": mobile,
             "vehicle_no": vehicle_no
         }
-        let res = await axios.put(`http://localhost:3001/book-slot/${id}`, {
-            duration_from: duration_from,
-            duration_to: duration_to,
-            whom: whom
-        })
+        try {
+            let res = await axios.put(`http://localhost:3001/book-slot/${id}`, {
+                duration_from: duration_from,
+                duration_to: duration_to,
+                whom: whom
+            })
 
-        if (res) {
-            setSuccess(true)
+            if (res) {
+                setSuccess(true)
 
-            setTimeout(() => {
-                refreshPage()
-            }, 3500);
+                setTimeout(() => {
+                    refreshPage()
+                }, 3500);
+            }
+            
+        } catch (err) {
+            setError(true)
+            setErrorMsg(err.response.data.message)
         }
+
 
     }
 
@@ -68,62 +77,67 @@ const Form = (props) => {
     //Conditional HTML 
     return (
         <>
-        
+
             {success
                 ?
                 <p className='success-msg'>
                     <span>Your slot is booked. Please wait while we are saving your data.</span> <br />
                     <span>Happy Parking</span>
                 </p>
-                :
 
-                <div className='form'>
+                : error
+                    ?
+                    <p className='bad-req-msg'>{errorMsg}</p>
+                    :
 
-                    <p className='heading'><span>Available! Book Your Slot Now</span></p>
-                    <div className='date-picker'>
-                        <DatePicker
-                            isClearable
-                            filterDate={d => {
-                                return new Date() < d;
-                            }}
-                            placeholderText="Select check in time"
-                            showTimeSelect
-                            dateFormat="MMMM dd, yyyy h:mmaa"
-                            selected={duration_from}
-                            selectsStart
-                            startDate={duration_from}
-                            minDate={duration_from}
-                            endDate={duration_to}
-                            onChange={date => setDuration_from(date)}
-                        />
-                        <DatePicker
-                            isClearable
-                            filterDate={d => {
-                                return new Date() < d;
-                            }}
-                            showTimeSelect
-                            placeholderText="Select check out time"
-                            dateFormat="MMMM dd, yyyy h:mmaa"
-                            selected={duration_to}
-                            selectsEnd
-                            startDate={duration_from}
-                            endDate={duration_to}
-                            minDate={duration_from}
-                            onChange={date => setDuration_to(date)}
-                        />
+                    <div className='form'>
+
+                        <p className='heading'><span>Available! Book Your Slot Now</span></p>
+                        <div className='date-picker'>
+
+                            <DatePicker
+                                isClearable
+                                filterDate={d => {
+                                    return new Date() < d;
+                                }}
+                                placeholderText="Select check in time"
+                                showTimeSelect
+                                dateFormat="MMMM dd, yyyy h:mmaa"
+                                selected={duration_from}
+                                selectsStart
+                                startDate={duration_from}
+                                minDate={duration_from}
+                                endDate={duration_to}
+                                onChange={date => setDuration_from(date)}
+                            />
+                            <DatePicker
+                                isClearable
+                                filterDate={d => {
+                                    return new Date() < d;
+                                }}
+                                showTimeSelect
+                                placeholderText="Select check out time"
+                                dateFormat="MMMM dd, yyyy h:mmaa"
+                                selected={duration_to}
+                                selectsEnd
+                                startDate={duration_from}
+                                endDate={duration_to}
+                                minDate={duration_from}
+                                onChange={date => setDuration_to(date)}
+                            />
+                        </div>
+
+                        <form className="booking-form">
+
+                            <input className="register-form" name="name" type='text' placeholder="Enter name" value={name} onChange={getName} />
+                            <input className="register-form" name="email" type='email' placeholder="Enter email" value={email} onChange={getEmail} />
+                            <input className="register-form" name="mobile" type='text' placeholder="Enter mobile no" value={mobile} onChange={getMobile} />
+                            <input className="register-form" name="vehicle_no" type='text' placeholder="Enter Vehicle no" value={vehicle_no} onChange={getVehicle_no} />
+                            <button type="button" className="btn btn-submit" onClick={sendData}>Confirm Booking</button>
+
+                        </form>
+
                     </div>
-
-                    <form className="booking-form">
-
-                        <input className="register-form" name="name" type='text' placeholder="Enter name" value={name} onChange={getName} />
-                        <input className="register-form" name="email" type='email' placeholder="Enter email" value={email} onChange={getEmail} />
-                        <input className="register-form" name="mobile" type='text' placeholder="Enter mobile no" value={mobile} onChange={getMobile} />
-                        <input className="register-form" name="vehicle_no" type='text' placeholder="Enter Vehicle no" value={vehicle_no} onChange={getVehicle_no} />
-                        <button type="button" className="btn btn-submit" onClick={sendData}>Confirm Booking</button>
-
-                    </form>
-
-                </div>
             }
         </>
     )

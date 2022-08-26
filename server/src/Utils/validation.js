@@ -1,4 +1,3 @@
-const mongoose = require("mongoose")
 
 
 const convert_sec_to_hr = function (secs) {
@@ -8,25 +7,6 @@ const convert_sec_to_hr = function (secs) {
     var minute = m > 0 ? m + (m == 1 ? " minute" : " minutes") : "";
     return hour + minute
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 let isValidRequestBody = function (body) {
@@ -52,31 +32,7 @@ let isValidEmail = function (email) {
     return emailRegex.test(email)
 }
 
-let isValidPassword = function (password) {
-    let passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/
-    return passwordRegex.test(password)
-}
 
-let isValidObjectId = function (ObjectId) {
-    return mongoose.isValidObjectId(ObjectId)
-}
-let checkPincode = (pincode) => {
-    let pincoderegex = /^[1-9]{1}?[0-9]{5}$/
-    return pincoderegex.test(pincode)
-}
-let checkImage = (img) => {
-    let imageRegex = /(jpeg|png|jpg)$/
-    return imageRegex.test(img)
-}
-let stringCheck = (string) => {
-    let stringreg = /^[#.a-zA-Z0-9\s,-]+$/
-    return stringreg.test(string)
-}
-
-let numCheck = (num) => {
-    let numCheck = /^[\0-9]*$/
-    return numCheck.test(num)
-}
 
 let anyObjectKeysEmpty = (value) => {
     let obArr = Object.keys(value)
@@ -98,11 +54,5 @@ module.exports = {
     isEmpty,
     isValidEmail,
     isValidPhone,
-    isValidPassword,
-    isValidObjectId,
-    checkPincode,
-    checkImage,
-    stringCheck,
-    numCheck,
     anyObjectKeysEmpty
 }

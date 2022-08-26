@@ -85,7 +85,8 @@
 }
 
 .slot-booked-msg,
-.min-waiting {
+.min-waiting,
+.bad-req-msg {
   color: rgb(233, 224, 224);
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   background-color: brown;
