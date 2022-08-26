@@ -88,7 +88,7 @@ const Form = (props) => {
 
                 <div className='form'>
 
-                    <p className='heading'><span>Available! Book Your Slot Now</span></p>
+                    <p className='heading'><span>Available! Book Your Slot {props.slotNo} Now</span></p>
                     <div className='date-picker'>
 
                         <DatePicker
