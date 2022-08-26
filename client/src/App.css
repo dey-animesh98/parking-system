@@ -41,9 +41,19 @@
 .slot-vacant {
   background-color: #177408;
 }
+.slot-vacant:hover {
+  background-color: rgb(10, 79, 10);
+  cursor: pointer;
+  transition: background-color 0.5s ease-out;
+}
 
 .slot-booked {
   background-color: rgb(8, 1, 1);
+}
+.slot-booked:hover {
+  background-color: rgb(75, 31, 11);
+  cursor: pointer;
+  transition: background-color 0.5s ease-out;
 }
 .form {
   display: inline-block;
@@ -57,6 +67,8 @@
   margin-left: 23%;
   background-color: rgb(5, 49, 75);
   color: rgb(210, 220, 228);
+  opacity: 1;
+  animation: fadeIn 1s;
 }
 
 .booking-form {
@@ -80,8 +92,12 @@
   border: none;
   background-color: #086274;
   color: antiquewhite;
-  cursor: pointer;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+.btn:hover {
+  background-color: #1f4e58;
+  cursor: pointer;
+  transition: background-color 1s ease-out;
 }
 
 .slot-booked-msg,
@@ -100,8 +116,7 @@
   animation: blinker 1s linear 10;
 }
 
-
-.bad-req-msg{
+.bad-req-msg {
   margin-top: 55px;
   margin-left: -4%;
 }
@@ -134,5 +149,18 @@
 @keyframes blinker {
   50% {
     opacity: 0.3;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
 }
