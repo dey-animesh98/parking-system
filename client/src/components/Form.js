@@ -49,7 +49,7 @@ const Form = (props) => {
             "vehicle_no": vehicle_no
         }
         try {
-            let res = await axios.put(`http://localhost:3001/book-slot/${id}`, {
+            let res = await axios.put(`https://vehicle-park.herokuapp.com/book-slot/${id}`, {
                 duration_from: duration_from,
                 duration_to: duration_to,
                 whom: whom
@@ -57,7 +57,7 @@ const Form = (props) => {
 
             if (res) {
                 setSuccess(true)
-                
+                setError(false)
                 setTimeout(() => {
                     props.reload()
                     setSuccess(false)
