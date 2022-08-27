@@ -48,6 +48,7 @@
 }
 
 .slot-booked {
+  animation: fadeIn 1s;
   background-color: rgb(20, 19, 19);
 }
 .slot-booked:hover {

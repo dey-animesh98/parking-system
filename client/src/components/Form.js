@@ -21,7 +21,6 @@ const Form = (props) => {
 
 
 
-
     //Collecting Input
     const getName = (e) => {
         return setName(e.target.value)
@@ -39,9 +38,6 @@ const Form = (props) => {
         return setVehicle_no(e.target.value)
     }
 
-    function refreshPage() {
-        window.location.reload(false);
-    }
 
     //Send data to sever
     const sendData = async () => {
@@ -61,10 +57,13 @@ const Form = (props) => {
 
             if (res) {
                 setSuccess(true)
-
+                
                 setTimeout(() => {
-                    refreshPage()
-                }, 3500);
+                    props.reload()
+                    setSuccess(false)
+                }, 3000);
+                
+
             }
 
         } catch (err) {

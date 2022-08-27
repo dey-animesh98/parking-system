@@ -115,10 +115,10 @@ const Booking = () => {
                 }
 
 
-                {showForm ? <Form slotNo={selectedSLot} /> : ""}
+                {showForm ? <Form slotNo={selectedSLot} reload={getSlots} formVis={showForm} /> : ""}
 
                 {//Error dialoge box
-                
+
                     isBooked
                         ?
                         <p className='slot-booked-msg'>
